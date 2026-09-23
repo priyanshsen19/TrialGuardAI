@@ -60,35 +60,35 @@ Assets: the chat API accepts uploaded `assets`. `LyzrClient.uploadRedactedAssets
 ## Architecture
 
 ```
-                          ┌────────────────────────── frontend (Next.js) ──────────────────────────┐
+                          ┌────────────────────────── frontend (Next.js) ───────────────────────────┐
                           │ Dashboard · Trials · Patients · Screenings · Human Review · Audit       │
                           └──────────────────────────────────┬──────────────────────────────────────┘
                                                              │ JWT · RBAC · rate limit · request/correlation IDs
-┌──────────────────────────────────────────── backend (NestJS) ▼ ─────────────────────────────────────────────┐
+┌─────────────────────────────────────────── backend(NestJS) ▼ ──────────────────────────────────────────────────┐
 │  Protocol PDF ──► parse pages ──► PHI redactor ─┐                     Patient EHR ──► PHI redactor ─┐          │
-│                   (page provenance)  (vault:    │                     (known ids + patterns;       │          │
-│                                       AES-GCM)  │                      DOB → age, vaulted)         │          │
+│                   (page provenance)  (vault:    │                     (known ids + patterns;        │          │
+│                                       AES-GCM)  │                      DOB → age, vaulted)          │          │
 │                                                 ▼                                                   ▼          │
-│  ┌──────────────────────────────── agents/orchestration (TrialGuardOrchestrator) ──────────────────────────┐ │
-│  │  Safe AI pre-flight (PHI/secret block, injection scan) ─► Lyzr Inference (live) │ mock simulator (mock)  │ │
-│  │  Safe AI post-flight (strict schema, verbatim grounding)                                               │ │
-│  │   Protocol Criteria Agent ─► criteria        Clinical Facts Agent ─► facts                              │ │
-│  └───────────────┬───────────────────────────────────────────────────────┬───────────────────────────────┘ │
-│                  ▼                                                       ▼                                 │
-│         ontology-validation (LOINC · SNOMED CT · ICD-10 · RxNorm/ATC; unmapped ⇒ UNKNOWN)                  │
-│                  ▼                                                                                          │
-│         screening-evaluation: DETERMINISTIC RULE ENGINE (no LLM) ─► PASS/FAIL/UNKNOWN/N/A per criterion      │
-│                  ▼                                                                                          │
-│         safety-validation: deterministic checks + Safety Validator Agent (adds flags only)                  │
+│  ┌──────────────────────────────── agents/orchestration (TrialGuardOrchestrator) ──────────────────────────┐   │
+│  │  Safe AI pre-flight (PHI/secret block, injection scan) ─► Lyzr Inference (live) │ mock simulator (mock) │   │
+│  │  Safe AI post-flight (strict schema, verbatim grounding)                                                │   │
+│  │   Protocol Criteria Agent ─► criteria        Clinical Facts Agent ─► facts                              │   │
+│  └───────────────┬───────────────────────────────────────────────────────┬─────────────────────────────────┘   │
+│                  ▼                                                       ▼                                     │
+│         ontology-validation (LOINC · SNOMED CT · ICD-10 · RxNorm/ATC; unmapped ⇒ UNKNOWN)                      │
+│                  ▼                                                                                             │
+│         screening-evaluation: DETERMINISTIC RULE ENGINE (no LLM) ─► PASS/FAIL/UNKNOWN/N/A per criterion        │
+│                  ▼                                                                                             │
+│         safety-validation: deterministic checks + Safety Validator Agent (adds flags only)                     │
 │                  ▼            ─► deterministic confidence ─► ELIGIBLE / INELIGIBLE / REQUIRES_HUMAN_OVERVIEW   │
-│         human review task (if needed) ─► reviewer decision (reason + signature hash)                        │
-│                  ▼                                                                                          │
-│         audit-generation: Audit Narration Agent (guarded, non-authoritative)                                │
-│                  ▼                                                                                          │
-│         dossier-generation: FDA-style audit dossier (PDF + JSON) ─► seal audit root                         │
-│                                                                                                             │
-│  Every step ─► AuditEvent (SHA-256 hash chain, append-only DB triggers)       Queues: BullMQ on Redis      │
-└───────────────────────────────┬───────────────────────────────────────────────┬─────────────────────────────┘
+│         human review task (if needed) ─► reviewer decision (reason + signature hash)                           │
+│                  ▼                                                                                             │
+│         audit-generation: Audit Narration Agent (guarded, non-authoritative)                                   │
+│                  ▼                                                                                             │
+│         dossier-generation: FDA-style audit dossier (PDF + JSON) ─► seal audit root                            │
+│                                                                                                                │
+│  Every step ─► AuditEvent (SHA-256 hash chain, append-only DB triggers)       Queues: BullMQ on Redis          │
+└───────────────────────────────┬───────────────────────────────────────────────┬────────────────────────────────┘
                                 ▼                                               ▼
                     PostgreSQL (Prisma)                               Redis (BullMQ) + worker process
 ```
