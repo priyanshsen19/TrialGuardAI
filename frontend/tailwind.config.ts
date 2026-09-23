@@ -25,6 +25,10 @@ export default {
         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' },
+      keyframes: {
+        'nav-progress': { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(300%)' } },
+      },
+      animation: { 'nav-progress': 'nav-progress 1s ease-in-out infinite' },
     },
   },
   plugins: [],

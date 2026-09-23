@@ -358,13 +358,24 @@ export class DossierService {
     return { row, json, pdf };
   }
 
+  /**
+   * Latest dossier file. If the stored file is gone (e.g. an ephemeral
+   * container disk was wiped by a redeploy) the dossier is regenerated from
+   * the database — it is built only from stored application data, so no agent
+   * call is made — and the regeneration is recorded in the audit chain.
+   */
   async latest(screeningId: string, kind: 'json' | 'pdf'): Promise<{ buffer: Buffer; version: number; sha256: string }> {
-    let row = await this.prisma.auditDossier.findFirst({ where: { screeningId }, orderBy: { version: 'desc' } });
-    if (!row) {
-      await this.generate(screeningId);
-      row = await this.prisma.auditDossier.findFirst({ where: { screeningId }, orderBy: { version: 'desc' } });
+    const row = await this.prisma.auditDossier.findFirst({ where: { screeningId }, orderBy: { version: 'desc' } });
+    if (row) {
+      try {
+        const buffer = await this.storage.get(kind === 'json' ? row.jsonStorageKey : row.pdfStorageKey, { encrypted: false });
+        return { buffer, version: row.version, sha256: sha256Hex(buffer) };
+      } catch (err) {
+        if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err;
+      }
     }
-    const buffer = await this.storage.get(kind === 'json' ? row!.jsonStorageKey : row!.pdfStorageKey, { encrypted: false });
-    return { buffer, version: row!.version, sha256: sha256Hex(buffer) };
+    const fresh = await this.generate(screeningId);
+    const buffer = kind === 'json' ? Buffer.from(JSON.stringify(fresh.json, null, 2), 'utf8') : fresh.pdf;
+    return { buffer, version: fresh.row.version, sha256: sha256Hex(buffer) };
   }
 }

@@ -16,7 +16,8 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(200)
-  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  // 30/min/IP: brute-force resistant, but the demo-role switcher (one login per switch) stays usable.
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
   login(@Body(new ZodPipe(LoginSchema)) body: z.infer<typeof LoginSchema>) {
     return this.auth.login(body.email, body.password);
   }

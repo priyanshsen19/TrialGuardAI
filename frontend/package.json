@@ -1,6 +1,8 @@
 {
   "name": "@trialguard/frontend",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "author": "Priyansh Sen",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",

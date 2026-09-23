@@ -37,8 +37,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       status = exception.getStatus();
       const r = exception.getResponse();
       const message = typeof r === 'string' ? r : ((r as { message?: string | string[] }).message ?? exception.message);
+      if (status === 429) {
+        body = { code: 'RATE_LIMITED', message: 'Too many requests — please wait a moment and try again.' };
+        res.status(status).json({ error: { ...body, requestId } });
+        return;
+      }
       body = {
-        code: status === 429 ? 'RATE_LIMITED' : status === 401 ? 'UNAUTHENTICATED' : status === 403 ? 'FORBIDDEN' : status === 404 ? 'NOT_FOUND' : status === 413 ? 'PAYLOAD_TOO_LARGE' : 'HTTP_ERROR',
+        code: status === 401 ? 'UNAUTHENTICATED' : status === 403 ? 'FORBIDDEN' : status === 404 ? 'NOT_FOUND' : status === 413 ? 'PAYLOAD_TOO_LARGE' : 'HTTP_ERROR',
         message: Array.isArray(message) ? message.join('; ') : String(message),
       };
     } else if ((exception as { code?: string })?.code === 'SAFE_AI_BLOCKED') {

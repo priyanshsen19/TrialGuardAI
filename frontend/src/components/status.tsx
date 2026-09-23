@@ -8,7 +8,7 @@ export function DecisionBadge({ decision, large = false, className }: { decision
   const map = {
     ELIGIBLE: { v: 'pass' as const, icon: CheckCircle2, label: 'Eligible' },
     INELIGIBLE: { v: 'fail' as const, icon: XCircle, label: 'Ineligible' },
-    REQUIRES_HUMAN_OVERVIEW: { v: 'warn' as const, icon: UserCheck, label: 'Requires human review' },
+    REQUIRES_HUMAN_OVERVIEW: { v: 'warn' as const, icon: UserCheck, label: 'Requires human overview' },
   }[decision];
   const Icon = map.icon;
   return (

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { Check, ChevronDown, ChevronRight, Download, FileText, ScrollText, ShieldCheck } from 'lucide-react';
-import Link from 'next/link';
+import { AppLink as Link } from '@/components/app-link';
 import { useParams } from 'next/navigation';
 import * as React from 'react';
 import { ReviewPanel } from '@/components/review-panel';
@@ -12,7 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, Progress } from '@/components/ui/misc';
-import { api, downloadFile } from '@/lib/api';
+import { DownloadButton } from '@/components/download-button';
+import { api } from '@/lib/api';
 import type { Evaluation, ScreeningDetail } from '@/lib/types';
 import { cn, fmtDate, fmtMs, pct } from '@/lib/utils';
 
@@ -45,8 +46,8 @@ export default function ScreeningDetailPage() {
         actions={
           <>
             <Link href={`/audit/${s.id}`}><Button variant="secondary"><ScrollText /> Audit trail</Button></Link>
-            <Button variant="outline" onClick={() => downloadFile(`/screenings/${s.id}/dossier`, `${s.screeningRef}-dossier.pdf`, true)}><FileText /> Dossier PDF</Button>
-            <Button variant="outline" onClick={() => downloadFile(`/screenings/${s.id}/dossier.json`, `${s.screeningRef}-dossier.json`)}><Download /> JSON</Button>
+            <DownloadButton variant="outline" path={`/screenings/${s.id}/dossier`} filename={`${s.screeningRef}-dossier.pdf`} open icon={<FileText />}>Dossier PDF</DownloadButton>
+            <DownloadButton variant="outline" path={`/screenings/${s.id}/dossier.json`} filename={`${s.screeningRef}-dossier.json`} icon={<Download />}>JSON</DownloadButton>
           </>
         }
       />

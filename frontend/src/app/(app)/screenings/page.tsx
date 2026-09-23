@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+import { AppLink as Link } from '@/components/app-link';
 import * as React from 'react';
 import { EmptyState, ErrorText, LoadingBlock, PageHeader } from '@/components/page';
 import { ConfidenceMeter, DecisionBadge, StatusBadge } from '@/components/status';

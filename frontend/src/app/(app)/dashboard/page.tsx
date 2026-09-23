@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Activity, CheckCircle2, Clock, EyeOff, FileSearch, FlaskConical, Loader2, PlayCircle, RotateCcw, ShieldAlert, ShieldCheck, UserCheck, Users, XCircle } from 'lucide-react';
-import Link from 'next/link';
+import { AppLink as Link } from '@/components/app-link';
 import { ErrorText, Kpi, LoadingBlock, PageHeader } from '@/components/page';
 import { DecisionBadge, Hash } from '@/components/status';
 import { Badge } from '@/components/ui/badge';
@@ -132,7 +132,7 @@ export default function DashboardPage() {
                 <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
                   <span><span className="mr-1 inline-block size-2 rounded-full bg-pass" />Eligible {s.eligible}</span>
                   <span><span className="mr-1 inline-block size-2 rounded-full bg-fail" />Ineligible {s.ineligible}</span>
-                  <span><span className="mr-1 inline-block size-2 rounded-full bg-warn" />Requires human review {s.humanReview}</span>
+                  <span><span className="mr-1 inline-block size-2 rounded-full bg-warn" />Requires human overview {s.humanReview}</span>
                 </div>
 
                 <h3 className="mb-2 mt-5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recent activity (audit events)</h3>

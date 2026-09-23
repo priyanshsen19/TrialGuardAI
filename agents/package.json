@@ -1,6 +1,8 @@
 {
   "name": "@trialguard/agents",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "author": "Priyansh Sen",
   "private": true,
   "description": "TrialGuard AI Lyzr agents, Safe AI layer, and multi-agent orchestration",
   "main": "dist/index.js",

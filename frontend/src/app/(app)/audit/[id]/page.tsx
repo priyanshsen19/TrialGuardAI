@@ -12,7 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input, Label } from '@/components/ui/input';
 import { Alert } from '@/components/ui/misc';
-import { api, downloadFile } from '@/lib/api';
+import { DownloadButton } from '@/components/download-button';
+import { api } from '@/lib/api';
 import type { AuditEvent, ScreeningDetail, Verification } from '@/lib/types';
 import { cn, fmtDate } from '@/lib/utils';
 
@@ -59,8 +60,8 @@ export default function AuditDetailPage() {
         actions={
           <>
             <Button onClick={() => verify.mutate()} disabled={verify.isPending}>{verify.isPending ? <Loader2 className="animate-spin" /> : <ShieldCheck />} Verify Audit Chain</Button>
-            <Button variant="outline" onClick={() => downloadFile(`/screenings/${id}/dossier`, `${a.screeningRef}-dossier.pdf`, true)}><FileText /> Export PDF</Button>
-            <Button variant="outline" onClick={() => downloadFile(`/screenings/${id}/dossier.json`, `${a.screeningRef}-dossier.json`)}><Download /> Export JSON</Button>
+            <DownloadButton variant="outline" path={`/screenings/${id}/dossier`} filename={`${a.screeningRef}-dossier.pdf`} open icon={<FileText />}>Export PDF</DownloadButton>
+            <DownloadButton variant="outline" path={`/screenings/${id}/dossier.json`} filename={`${a.screeningRef}-dossier.json`} icon={<Download />}>Export JSON</DownloadButton>
           </>
         }
       />

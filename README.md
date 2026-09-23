@@ -11,7 +11,7 @@
 | [`/agents`](agents) | **Lyzr implementation**: 4 Lyzr agents, Lyzr client / environment / inference / Safe AI, multi-agent orchestration |
 | [`/backend`](backend) | NestJS API, deterministic rule engine, PHI vault, ontology, audit hash chain, BullMQ workers, dossier generator |
 | [`/frontend`](frontend) | Next.js "Clinical Operations Command Center" UI |
-| [`/tests`](tests) | 125 tests: unit (rule engine, PHI, ontology, agents, cross-validation on a **real captured Lyzr response**, audit, prompt injection, inference cache) plus full-stack API integration |
+| [`/tests`](tests) | 126 tests + a 40-step UI click-through: unit (rule engine, PHI, ontology, agents, cross-validation on a **real captured Lyzr response**, audit, prompt injection, inference cache) plus full-stack API integration |
 | [`/synthetic-data`](synthetic-data) | Fictional protocol CT-2026-001 (PDF + text), 5 synthetic patients, scenarios, adversarial fixture |
 | [`/docs`](docs) | Architecture notes, screenshots |
 
@@ -344,6 +344,7 @@ In Lyzr Studio, attach a Responsible AI policy to each agent (PII redaction = re
 pnpm test               # everything (unit + integration)
 pnpm test:unit          # no database needed (SKIP_DB_TESTS=1 pnpm test:unit)
 pnpm test:integration   # needs PostgreSQL; uses TEST_DATABASE_URL (default: <os-user>@localhost:5432/trialguard_test)
+pnpm test:ui            # headless click-through of all 40 UI controls (needs web :3000 + API :4000 in LYZR_MODE=mock; refuses to run in live mode)
 ```
 
 Coverage by requirement: rule engine (all 13 operators and the spec's critical cases 5≥5, 5>5, 5≤5, 5<5, 6.5/8.1 BETWEEN, 30/29-day washout, the 22-day example), PHI redaction, **PHI leakage** (John Smith / john@example.com / 555-555-5555 / MRN-12345 / 123 Main Street absent from the captured Lyzr HTTP payload; redaction bypass is blocked before sending), ontology resolution, protocol extraction ("adequate renal function" → review, no invented threshold), clinical fact extraction, grounding rejection of hallucinations, **audit hash chain** (10 events valid → modify #5 invalid → restore valid; re-hash, deletion and reordering detected), DB append-only triggers, **prompt injection** (adversarial protocol, envelope break-out, hijacked LLM output rejected), Lyzr client (documented request shape, retries, timeouts, no key leakage), mock mode labelling, narrative guard, and full-stack API tests: auth, RBAC, validation, file validation, three decision states, idempotency (auto key, `Idempotency-Key`, protocol re-upload), timeline, verify, tamper, human review workflow, PDF and JSON dossier, and end-to-end PHI scans of every API response and stored table.
@@ -372,6 +373,10 @@ Regenerate with `pnpm docs:screenshots` while the stack is running (uses a local
 - Scanned (image-only) PDFs are rejected; there is no OCR.
 - The live Lyzr adapter implements the documented v3 chat and agent endpoints but has not been exercised against a live tenant in this repository's CI. The asset-upload route is configurable because it is tenant- and version-specific.
 - Demo reset uses `TRUNCATE`, which bypasses the row-level append-only triggers. It is available only when `DEMO_MODE=true`, to ADMIN or COORDINATOR users.
+
+## License
+
+Copyright © 2026 Priyansh Sen. **All rights reserved.** See [LICENSE](LICENSE). This repository is public for hackathon evaluation only: HiDevs Agent Arena organisers and judges may access, build and run it solely to evaluate the submission. No other use, copying, modification or distribution is permitted without written permission.
 
 ## Roadmap
 

@@ -11,6 +11,7 @@ import { login } from '@/lib/api';
 import { clearSession } from '@/lib/auth';
 import { useHealth, useSession } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
+import { NavigationProgress } from '@/components/navigation-progress';
 
 const NAV = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -45,9 +46,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { data: health } = useHealth();
   const [open, setOpen] = React.useState(false);
   const [switching, setSwitching] = React.useState(false);
+  const signingOut = React.useRef(false);
 
   React.useEffect(() => {
-    if (ready && !user) router.replace(`/login?next=${encodeURIComponent(pathname)}`);
+    // Explicit sign-out starts fresh; an expired session returns you to where you were.
+    if (ready && !user) router.replace(signingOut.current ? '/login' : `/login?next=${encodeURIComponent(pathname)}`);
   }, [ready, user, router, pathname]);
 
   React.useEffect(() => setOpen(false), [pathname]);
@@ -103,6 +106,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <NavigationProgress />
       <DemoBanner />
       <div className="flex flex-1">
         <aside className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col border-r border-border bg-panel lg:flex">
@@ -150,6 +154,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className="rounded p-1.5 text-muted-foreground hover:bg-panel-2 hover:text-foreground"
                 aria-label="Sign out"
                 onClick={() => {
+                  signingOut.current = true;
                   clearSession();
                   qc.clear();
                   router.replace('/login');

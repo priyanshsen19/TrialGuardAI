@@ -1,6 +1,8 @@
 {
   "name": "trialguard-ai",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "author": "Priyansh Sen",
   "private": true,
   "description": "TrialGuard AI — Governed AI for Clinical Trial Patient Screening (HiDevs Agent Arena, synthetic data only)",
   "packageManager": "pnpm@11.12.0",
@@ -22,7 +24,8 @@
     "test:unit": "vitest run --config tests/vitest.config.ts tests/unit",
     "test:integration": "vitest run --config tests/vitest.config.ts tests/integration",
     "typecheck": "pnpm -r typecheck",
-    "docs:screenshots": "node docs/scripts/capture-screenshots.mjs"
+    "docs:screenshots": "node docs/scripts/capture-screenshots.mjs",
+    "test:ui": "node tests/e2e/ui-click-through.mjs"
   },
   "devDependencies": {
     "@swc/core": "^1.7.0",

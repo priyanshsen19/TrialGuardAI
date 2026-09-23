@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FileUp, Loader2, PlayCircle } from 'lucide-react';
-import Link from 'next/link';
+import { AppLink as Link } from '@/components/app-link';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { ErrorText, KV, LoadingBlock, PageHeader } from '@/components/page';

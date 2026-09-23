@@ -50,19 +50,47 @@ export async function login(email: string, password: string) {
   return r.user;
 }
 
-/** Download an authenticated binary (dossier PDF/JSON) and hand it to the browser. */
+/**
+ * Download an authenticated binary (dossier PDF/JSON).
+ * `open` shows it in a new tab: the tab is opened synchronously inside the
+ * click (browsers block window.open after an await) and navigated once the
+ * file has arrived; if the tab was blocked the file is downloaded instead.
+ */
 export async function downloadFile(path: string, filename: string, open = false) {
-  const res = await fetch(`${API_URL}${path}`, { headers: { authorization: `Bearer ${getToken() ?? ''}` } });
-  if (!res.ok) throw new ApiError(res.status, 'DOWNLOAD_FAILED', `Download failed (${res.status})`);
-  const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
-  if (open) {
-    window.open(url, '_blank', 'noopener');
-  } else {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
+  const tab = open ? window.open('', '_blank') : null;
+  if (tab) tab.document.title = 'Loading dossier…';
+  try {
+    let res: Response;
+    try {
+      res = await fetch(`${API_URL}${path}`, { headers: { authorization: `Bearer ${getToken() ?? ''}` }, cache: 'no-store' });
+    } catch {
+      throw new ApiError(0, 'NETWORK_ERROR', 'Could not reach the TrialGuard API (network error, or the server is waking up). Please try again in a moment.');
+    }
+    if (!res.ok) {
+      let message = `Export failed (HTTP ${res.status})`;
+      try {
+        const body = (await res.json()) as { error?: { message?: string; requestId?: string } };
+        if (body.error?.message) message = `${body.error.message}${body.error.requestId ? ` (request ${body.error.requestId.slice(0, 8)})` : ''}`;
+      } catch {
+        /* non-JSON error body */
+      }
+      throw new ApiError(res.status, 'DOWNLOAD_FAILED', message);
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    if (tab && !tab.closed) {
+      tab.location.href = url;
+    } else {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 120_000);
+  } catch (err) {
+    tab?.close();
+    throw err;
   }
-  setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }

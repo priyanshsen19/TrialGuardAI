@@ -1,6 +1,8 @@
 {
   "name": "@trialguard/backend",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "author": "Priyansh Sen",
   "private": true,
   "description": "TrialGuard AI API, deterministic rule engine, PHI protection, audit and queue workers",
   "scripts": {

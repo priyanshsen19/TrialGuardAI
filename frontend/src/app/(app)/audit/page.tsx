@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { CheckCircle2, Loader2, ShieldCheck, XCircle } from 'lucide-react';
-import Link from 'next/link';
+import { AppLink as Link } from '@/components/app-link';
 import * as React from 'react';
 import { EmptyState, ErrorText, LoadingBlock, PageHeader } from '@/components/page';
 import { DecisionBadge, Hash } from '@/components/status';

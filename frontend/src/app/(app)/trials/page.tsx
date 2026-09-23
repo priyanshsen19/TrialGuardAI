@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
-import Link from 'next/link';
+import { AppLink as Link } from '@/components/app-link';
 import * as React from 'react';
 import { EmptyState, ErrorText, LoadingBlock, PageHeader } from '@/components/page';
 import { Hash, StatusBadge } from '@/components/status';
