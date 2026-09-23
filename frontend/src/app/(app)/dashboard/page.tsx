@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Activity, CheckCircle2, Clock, EyeOff, FileSearch, FlaskConical, Loader2, PlayCircle, RotateCcw, ShieldAlert, UserCheck, Users, XCircle } from 'lucide-react';
+import { Activity, CheckCircle2, Clock, EyeOff, FileSearch, FlaskConical, Loader2, PlayCircle, RotateCcw, ShieldAlert, ShieldCheck, UserCheck, Users, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { ErrorText, Kpi, LoadingBlock, PageHeader } from '@/components/page';
 import { DecisionBadge, Hash } from '@/components/status';
@@ -209,7 +209,13 @@ export default function DashboardPage() {
                         <Badge variant="muted">v{a.version}</Badge>
                       </div>
                       <div className="mt-0.5 text-[11px] text-muted-foreground">queue: <span className="font-mono">{a.queue}</span></div>
-                      <div className="mt-1 text-[11px] text-fail/90">never: {a.prohibitedActions.join('; ')}</div>
+                      <div className="mt-1.5 flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                        <ShieldCheck className="mt-px size-3 shrink-0 text-pass" aria-hidden />
+                        <span>
+                          <span className="font-medium text-foreground/80">Guardrails · never: </span>
+                          {a.prohibitedActions.join('; ')}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </CardContent>
