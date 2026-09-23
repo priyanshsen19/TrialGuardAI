@@ -45,12 +45,12 @@ services:
         value: "TrialGuard!Demo2026"
       - key: STORAGE_DIR
         value: ./storage
-      # Mock mode needs no credentials. To go live, set these 5 in the Render
-      # dashboard (Environment tab) after provisioning the agents — see README
-      # "Live Lyzr mode". They are intentionally left unset here (sync: false)
-      # so nothing is baked into the blueprint or git history.
+      # Set in the Render dashboard (Environment tab), never in git:
+      #   LYZR_MODE = mock (default when empty; no credentials, no credits) | live
+      # For live, also set the API key and the four agent IDs below. sync: false
+      # means a Blueprint sync never overwrites what you set in the dashboard.
       - key: LYZR_MODE
-        value: mock
+        sync: false
       - key: LYZR_API_KEY
         sync: false
       - key: LYZR_PROTOCOL_AGENT_ID

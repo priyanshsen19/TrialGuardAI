@@ -171,3 +171,10 @@ describe('safety agent flag grounding', () => {
     expect(r.flags[1].description).toContain('EXC-005 PASS: Prednisone: end=2026-06-01 → days_since=114');
   });
 });
+
+describe('environment defaults', () => {
+  it('treats an empty LYZR_MODE as mock (safe default for deployments)', () => {
+    expect(loadLyzrEnvironment({ LYZR_MODE: '' } as NodeJS.ProcessEnv).mode).toBe('mock');
+    expect(loadLyzrEnvironment({ LYZR_MODE: '  ' } as NodeJS.ProcessEnv).mode).toBe('mock');
+  });
+});

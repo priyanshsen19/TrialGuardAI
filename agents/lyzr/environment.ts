@@ -47,7 +47,7 @@ function int(v: string | undefined, fallback: number): number {
 }
 
 export function loadLyzrEnvironment(env: NodeJS.ProcessEnv = process.env): LyzrEnvironmentConfig {
-  const modeRaw = (env.LYZR_MODE ?? 'mock').toLowerCase();
+  const modeRaw = (env.LYZR_MODE?.trim() || 'mock').toLowerCase();
   if (modeRaw !== 'mock' && modeRaw !== 'live') {
     throw new LyzrConfigurationError(`LYZR_MODE must be "mock" or "live" (got "${modeRaw}")`);
   }
