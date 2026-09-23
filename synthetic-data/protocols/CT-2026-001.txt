@@ -1,0 +1,94 @@
+=== PAGE 1 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+SYNTHETIC CLINICAL PROTOCOL - FOR SOFTWARE DEMONSTRATION ONLY
+This document is entirely fictional. It describes no real study, sponsor, product or participant.
+
+GLYCO-SHIELD-2
+A Phase II, Randomized, Double-Blind, Placebo-Controlled, 24-Week Study of the Efficacy and Safety of TGX-417 as Add-On Therapy to Metformin in Adults with Type 2 Diabetes Mellitus
+
+Protocol Number: CT-2026-001
+Phase: II
+Sponsor: Northwind Therapeutics (fictional)
+Investigational Product: TGX-417 (fictional oral agent)
+Protocol Version: 2.0 (Amendment 1)
+Version Date: 15 June 2026
+
+Page 1 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 2 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+1 PROTOCOL SYNOPSIS
+Objective: To evaluate the change from baseline in HbA1c at Week 24 with TGX-417 compared with placebo when added to stable metformin therapy.
+Population: Adults with type 2 diabetes mellitus inadequately controlled on metformin monotherapy.
+Planned enrolment: 240 participants randomised 1:1:1 to TGX-417 low dose, TGX-417 high dose, or placebo.
+Duration: 4-week screening period, 24-week treatment period, 4-week safety follow-up.
+
+Page 2 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 3 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+2 OBJECTIVES AND ENDPOINTS
+Primary endpoint: Change from baseline in HbA1c at Week 24.
+Secondary endpoints: Change in fasting plasma glucose; proportion of participants achieving HbA1c below 7.0%; change in body weight.
+Safety endpoints: Incidence of treatment-emergent adverse events, hypoglycaemia, and clinically relevant laboratory abnormalities.
+
+3 STUDY DESIGN
+Multicentre, randomised, double-blind, placebo-controlled, parallel-group study conducted at approximately 40 fictional sites.
+
+Page 3 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 4 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+4 SCREENING PROCEDURES
+All screening laboratory values must be obtained within the windows defined in Section 5. Screening eligibility is confirmed by the investigator. Where eligibility depends on information that cannot be verified from source documents, the case must be referred to the investigator for review.
+
+Page 4 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 5 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+5 STUDY POPULATION
+5.1 Inclusion Criteria
+Participants are eligible to be included in the study only if ALL of the following criteria apply:
+INC-001. Participant is aged 18 to 75 years, inclusive, at the time of screening.
+INC-002. Documented diagnosis of type 2 diabetes mellitus (ICD-10 E11) for at least 180 days prior to screening.
+INC-003. Hemoglobin A1c (HbA1c) between 7.0% and 10.5%, inclusive, measured within 30 days prior to screening.
+INC-004. Estimated glomerular filtration rate (eGFR) greater than or equal to 60 mL/min/1.73m2, measured within 30 days prior to screening.
+INC-005. Alanine aminotransferase (ALT) less than or equal to 100 U/L, measured within 30 days prior to screening.
+INC-006. Aspartate aminotransferase (AST) less than or equal to 100 U/L, measured within 30 days prior to screening.
+INC-007. Total bilirubin less than or equal to 1.8 mg/dL, measured within 30 days prior to screening.
+INC-008. Receiving metformin at a stable dose for at least 90 days prior to screening.
+INC-009. Body mass index (BMI) between 25.0 and 40.0 kg/m2, inclusive, measured within 30 days prior to screening.
+INC-010. Written informed consent obtained prior to any study-specific procedure.
+
+Page 5 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 6 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+5.2 Exclusion Criteria
+Participants are excluded from the study if ANY of the following criteria apply:
+EXC-001. Diagnosis of type 1 diabetes mellitus or any history of diabetic ketoacidosis.
+EXC-002. Myocardial infarction, stroke, or hospitalization for heart failure within 180 days prior to screening.
+EXC-003. Major surgery or percutaneous coronary intervention within 90 days prior to screening.
+EXC-004. Positive pregnancy test at screening (female participants only).
+EXC-005. Use of systemic corticosteroids within 30 days prior to screening.
+EXC-006. Use of any GLP-1 receptor agonist or insulin within 90 days prior to screening.
+EXC-007. Any history of acute or chronic pancreatitis.
+EXC-008. Diagnosis of malignancy within 5 years prior to screening.
+
+5.3 Investigator Guidance (Non-Binding)
+GDN-001. Participants should have adequate renal function in the opinion of the investigator.
+
+Page 6 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 7 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+6 STUDY TREATMENT
+TGX-417 or matching placebo is administered orally once daily with the first meal of the day. Participants continue their stable metformin dose throughout the study.
+
+7 SAFETY MONITORING
+Hypoglycaemia events, liver enzyme elevations above 3 x ULN, and renal function decline must be reported to the medical monitor within 24 hours.
+
+Page 7 of 8 | SYNTHETIC DEMONSTRATION DATA
+=== PAGE 8 ===
+CT-2026-001 | Protocol Version 2.0 | 15 June 2026 | SYNTHETIC DEMONSTRATION PROTOCOL
+8 DATA INTEGRITY AND RECORDS
+Electronic records supporting eligibility must be attributable, legible, contemporaneous, original and accurate (ALCOA+). Screening decisions must be traceable to source documents and reviewed by qualified study personnel.
+
+9 REVISION HISTORY
+Version 1.0 (02 March 2026): original protocol. Version 2.0 (15 June 2026): clarified laboratory windows and added Section 5.3.
+
+Page 8 of 8 | SYNTHETIC DEMONSTRATION DATA

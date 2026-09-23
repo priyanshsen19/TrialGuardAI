@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Clinical Operations Command Center — dark navy */
+  --background: 216 55% 7%;
+  --foreground: 210 40% 97%;
+  --panel: 215 50% 11%;
+  --panel-2: 215 45% 14%;
+  --border: 214 38% 21%;
+  --input: 214 38% 24%;
+  --ring: 213 94% 62%;
+  --primary: 213 94% 58%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 215 40% 17%;
+  --muted-foreground: 214 20% 68%;
+  --pass: 142 69% 45%;
+  --fail: 0 79% 60%;
+  --warn: 38 92% 52%;
+  --info: 199 89% 58%;
+}
+
+html,
+body {
+  @apply bg-background text-foreground antialiased;
+  font-feature-settings: 'cv11', 'ss01';
+}
+
+*:focus-visible {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.35);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 8px;
+}
+
+@layer components {
+  .table-dense th {
+    @apply whitespace-nowrap border-b border-border bg-panel-2 px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground;
+  }
+  .table-dense td {
+    @apply border-b border-border/60 px-3 py-2 align-top text-[13px];
+  }
+  .table-dense tbody tr:hover {
+    @apply bg-panel-2/60;
+  }
+  .kbd-hash {
+    @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[11px] text-info;
+  }
+}

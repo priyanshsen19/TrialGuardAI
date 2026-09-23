@@ -1,0 +1,57 @@
+{
+  "patientRef": "PAT-001",
+  "synthetic": true,
+  "syntheticNotice": "Entirely fictional patient generated for TrialGuard AI demonstration. Any resemblance to real persons is coincidental.",
+  "expectedDecision": "ELIGIBLE",
+  "scenario": "All inclusion criteria met, no exclusion triggered. A prednisone course ended 114 days before screening (outside the 30-day window).",
+  "demographics": {
+    "name": "Harriet Quillfeather",
+    "dateOfBirth": "1972-03-14",
+    "sex": "F",
+    "mrn": "MRN-100231",
+    "address": "42 Harbor View Road, Springfield",
+    "phone": "555-201-4432",
+    "email": "harriet.q@example.com",
+    "insuranceId": "INS-88420019",
+    "hospitalId": "HOSP-ID-5521"
+  },
+  "documents": [
+    {
+      "name": "face-sheet.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nDEMOGRAPHICS\nPatient Name: Harriet Quillfeather\nDOB: 1972-03-14\nSex: Female\nMRN: MRN-100231\nAddress: 42 Harbor View Road, Springfield\nPhone: 555-201-4432\nEmail: harriet.q@example.com\nInsurance Member ID: INS-88420019\nHospital ID: HOSP-ID-5521"
+      ]
+    },
+    {
+      "name": "problem-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nPROBLEM LIST\n- Type 2 diabetes mellitus | ICD-10 E11.9 | onset 2019-04-02 | active\n- Essential hypertension | ICD-10 I10 | onset 2017-01-10 | active\n- Hyperlipidemia | ICD-10 E78.5 | onset 2018-06-20 | active"
+      ]
+    },
+    {
+      "name": "lab-report.pdf",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nSpecimen collected for Harriet Quillfeather, MRN MRN-100231. Reference lab: Synthetic Reference Laboratory A.",
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nLABORATORY RESULTS\n2026-09-10 | Hemoglobin A1c | 7.8 | %\n2026-09-10 | eGFR (CKD-EPI) | 72 | mL/min/1.73m2\n2026-09-10 | ALT (alanine aminotransferase) | 28 | U/L\n2026-09-10 | AST (aspartate aminotransferase) | 24 | U/L\n2026-09-10 | Total bilirubin | 0.7 | mg/dL\n2026-09-18 | Urine hCG pregnancy test | negative | -\nVITAL SIGNS\n2026-09-10 | BMI | 31.2 | kg/m2"
+      ]
+    },
+    {
+      "name": "medication-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nMEDICATIONS\n- Metformin 1000 mg PO BID | start 2021-05-01 | end ongoing\n- Lisinopril 10 mg PO daily | start 2018-02-01 | end ongoing\n- Atorvastatin 20 mg PO nightly | start 2018-07-01 | end ongoing\n- Prednisone 20 mg PO daily | start 2026-05-20 | end 2026-06-01"
+      ]
+    },
+    {
+      "name": "procedures-and-consent.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nPROCEDURES\n- Colonoscopy | 2025-02-11\nADMINISTRATIVE\n- Informed consent signed (ICF v2.1) | 2026-09-15"
+      ]
+    },
+    {
+      "name": "clinic-note.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nCLINICAL NOTE\nSeen for trial pre-screening on 2026-09-15. Patient Harriet Quillfeather reports good adherence to metformin. Short prednisone course in May 2026 for contact dermatitis, completed as prescribed. No hypoglycaemia. Contact via harriet.q@example.com or 555-201-4432."
+      ]
+    }
+  ]
+}

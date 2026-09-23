@@ -1,0 +1,56 @@
+{
+  "patientRef": "PAT-003",
+  "synthetic": true,
+  "syntheticNotice": "Entirely fictional patient generated for TrialGuard AI demonstration. Any resemblance to real persons is coincidental.",
+  "expectedDecision": "REQUIRES_HUMAN_OVERVIEW",
+  "scenario": "Patient-reported 'steroid pills' with discontinuation date 'sometime last month' - EXC-005 washout cannot be verified.",
+  "demographics": {
+    "name": "Tobias Wrenfield",
+    "dateOfBirth": "1979-01-22",
+    "sex": "M",
+    "mrn": "MRN-100233",
+    "address": "7 Juniper Lane, Oakmere",
+    "phone": "555-477-1203",
+    "email": "tobias.w@example.com",
+    "insuranceId": "INS-77304512",
+    "hospitalId": "HOSP-ID-5523"
+  },
+  "documents": [
+    {
+      "name": "face-sheet.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nDEMOGRAPHICS\nPatient Name: Tobias Wrenfield\nDOB: 1979-01-22\nSex: Male\nMRN: MRN-100233\nAddress: 7 Juniper Lane, Oakmere\nPhone: 555-477-1203\nEmail: tobias.w@example.com\nInsurance Member ID: INS-77304512\nHospital ID: HOSP-ID-5523"
+      ]
+    },
+    {
+      "name": "problem-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nPROBLEM LIST\n- Type 2 diabetes mellitus | ICD-10 E11.9 | onset 2020-08-19 | active\n- Essential hypertension | ICD-10 I10 | onset 2021-03-02 | active"
+      ]
+    },
+    {
+      "name": "lab-report.pdf",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nLABORATORY RESULTS\n2026-09-09 | Hemoglobin A1c | 9.1 | %\n2026-09-09 | eGFR (CKD-EPI) | 88 | mL/min/1.73m2\n2026-09-09 | ALT (alanine aminotransferase) | 41 | U/L\n2026-09-09 | AST (aspartate aminotransferase) | 35 | U/L\n2026-09-09 | Total bilirubin | 0.6 | mg/dL\nVITAL SIGNS\n2026-09-09 | BMI | 34.8 | kg/m2"
+      ]
+    },
+    {
+      "name": "medication-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nMEDICATIONS\n- Metformin 1000 mg PO BID | start 2020-09-01 | end ongoing\n- Amlodipine 5 mg PO daily | start 2021-03-10 | end ongoing\n- Prednisone (patient-reported \"steroid pills\" for rash, dose unknown) | start unknown | end sometime last month"
+      ]
+    },
+    {
+      "name": "procedures-and-consent.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nADMINISTRATIVE\n- Informed consent signed (ICF v2.1) | 2026-09-17"
+      ]
+    },
+    {
+      "name": "clinic-note.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nCLINICAL NOTE\nPatient reports taking \"steroid pills\" prescribed at an urgent care clinic for a rash, finished sometime last month. Exact drug, dose and stop date not documented; outside records requested."
+      ]
+    }
+  ]
+}

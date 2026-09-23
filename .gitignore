@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.next/
+out/
+coverage/
+.env
+.env.local
+*.log
+backend/storage/
+/storage/
+.turbo/
+*.tsbuildinfo
+.DS_Store
+demo-output/
+.claude/

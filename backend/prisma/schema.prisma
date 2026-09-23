@@ -1,0 +1,442 @@
+// TrialGuard AI — relational model.
+// PHI never appears in plaintext columns: identifiers live in PhiVaultEntry
+// (AES-256-GCM ciphertext) and raw uploads are stored encrypted on disk.
+// AuditEvent / AuditRoot / ReviewDecision are append-only (enforced by
+// database triggers in migration 0002_append_only).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ExtractionStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum ScreeningStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum Decision {
+  ELIGIBLE
+  INELIGIBLE
+  REQUIRES_HUMAN_OVERVIEW
+}
+
+enum ReviewTaskStatus {
+  OPEN
+  AWAITING_INFORMATION
+  ESCALATED
+  RESOLVED
+}
+
+enum ReviewAction {
+  APPROVE_ELIGIBLE
+  APPROVE_INELIGIBLE
+  REQUEST_MORE_INFORMATION
+  REQUIRE_ADDITIONAL_REVIEW
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  permissions String[]
+  users       User[]
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  displayName     String
+  passwordHash    String
+  roleId          String
+  role            Role             @relation(fields: [roleId], references: [id])
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  reviewDecisions ReviewDecision[]
+}
+
+model Trial {
+  id          String      @id @default(uuid())
+  code        String      @unique
+  title       String
+  phase       String
+  sponsor     String
+  indication  String
+  status      String      @default("ACTIVE")
+  synthetic   Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  protocols   Protocol[]
+  screenings  Screening[]
+}
+
+model Protocol {
+  id        String            @id @default(uuid())
+  trialId   String
+  trial     Trial             @relation(fields: [trialId], references: [id])
+  title     String
+  createdAt DateTime          @default(now())
+  versions  ProtocolVersion[]
+}
+
+model ProtocolVersion {
+  id                  String              @id @default(uuid())
+  protocolId          String
+  protocol            Protocol            @relation(fields: [protocolId], references: [id])
+  version             String
+  status              ExtractionStatus    @default(PENDING)
+  contentHash         String
+  redactedHash        String?
+  documentId          String?             @unique
+  document            Document?           @relation(fields: [documentId], references: [id])
+  pageCount           Int                 @default(0)
+  phiSummary          Json?
+  extractionNotes     Json?
+  groundingRejections Json?
+  injectionFindings   Json?
+  /// LLM vs deterministic reference parser comparison (live mode)
+  crossValidation     Json?
+  agentExecutionId    String?
+  errorMessage        String?
+  createdAt           DateTime            @default(now())
+  extractedAt         DateTime?
+  criteria            ProtocolCriterion[]
+  screenings          Screening[]
+
+  @@unique([protocolId, contentHash])
+}
+
+model ProtocolCriterion {
+  id                  String          @id @default(uuid())
+  protocolVersionId   String
+  protocolVersion     ProtocolVersion @relation(fields: [protocolVersionId], references: [id])
+  criterionKey        String
+  category            String
+  domain              String
+  field               String
+  operator            String
+  text                String
+  page                Int
+  section             String
+  mandatory           Boolean
+  requiresHumanReview Boolean
+  ambiguity           Int
+  definition          Json
+
+  @@unique([protocolVersionId, criterionKey])
+}
+
+model Patient {
+  id                   String           @id @default(uuid())
+  patientRef           String           @unique
+  sex                  String?
+  /// Vault scope id for this patient's PHI (aliases → ciphertext in PhiVaultEntry)
+  phiScope             String           @unique
+  synthetic            Boolean          @default(true)
+  createdAt            DateTime         @default(now())
+  versions             PatientVersion[]
+  screenings           Screening[]
+}
+
+model PatientVersion {
+  id                  String           @id @default(uuid())
+  patientId           String
+  patient             Patient          @relation(fields: [patientId], references: [id])
+  versionNumber       Int
+  snapshotHash        String
+  status              ExtractionStatus @default(PENDING)
+  phiSummary          Json?
+  injectionFindings   Json?
+  groundingRejections Json?
+  extractionNotes     Json?
+  /// LLM vs deterministic reference parser comparison (live mode)
+  crossValidation     Json?
+  agentExecutionId    String?
+  errorMessage        String?
+  createdAt           DateTime         @default(now())
+  extractedAt         DateTime?
+  facts               ClinicalFact[]
+  documents           Document[]
+  screenings          Screening[]
+
+  @@unique([patientId, snapshotHash])
+  @@unique([patientId, versionNumber])
+}
+
+model ClinicalFact {
+  id                String           @id @default(uuid())
+  patientVersionId  String
+  patientVersion    PatientVersion   @relation(fields: [patientVersionId], references: [id])
+  factKey           String
+  category          String
+  display           String
+  value             Json?
+  unit              String?
+  observedAt        String?
+  datePrecision     String
+  sourceDocument    String
+  sourcePage        Int
+  mappingStatus     String
+  ontologyMappingId String?
+  ontologyMapping   OntologyMapping? @relation(fields: [ontologyMappingId], references: [id])
+  data              Json
+
+  @@unique([patientVersionId, factKey])
+}
+
+model OntologyMapping {
+  id              String         @id @default(uuid())
+  sourceText      String
+  proposedSystem  String?
+  proposedCode    String?
+  system          String?
+  code            String?
+  display         String?
+  status          String
+  method          String
+  confidence      Float
+  ontologyVersion String
+  createdAt       DateTime       @default(now())
+  facts           ClinicalFact[]
+
+  @@unique([sourceText, proposedSystem, proposedCode, ontologyVersion])
+}
+
+model Document {
+  id               String           @id @default(uuid())
+  kind             String
+  filename         String
+  mimeType         String
+  sizeBytes        Int
+  sha256           String
+  /// Encrypted original (contains PHI) — AES-256-GCM on disk
+  storageKey       String
+  /// PHI-redacted page texts (JSON array of {page,text})
+  redactedPages    Json
+  patientVersionId String?
+  patientVersion   PatientVersion?  @relation(fields: [patientVersionId], references: [id])
+  protocolVersion  ProtocolVersion?
+  createdAt        DateTime         @default(now())
+}
+
+model PhiVaultEntry {
+  id         String   @id @default(uuid())
+  scope      String
+  alias      String
+  category   String
+  ciphertext String
+  createdAt  DateTime @default(now())
+
+  @@unique([scope, alias])
+  @@index([scope])
+}
+
+model Screening {
+  id                  String                @id @default(uuid())
+  screeningRef        String                @unique
+  trialId             String
+  trial               Trial                 @relation(fields: [trialId], references: [id])
+  protocolVersionId   String
+  protocolVersion     ProtocolVersion       @relation(fields: [protocolVersionId], references: [id])
+  patientId           String
+  patient             Patient               @relation(fields: [patientId], references: [id])
+  patientVersionId    String
+  patientVersion      PatientVersion        @relation(fields: [patientVersionId], references: [id])
+  screeningDate       String
+  status              ScreeningStatus       @default(QUEUED)
+  decision            Decision?
+  finalDecision       Decision?
+  confidence          Float?
+  decisionReasons     Json?
+  confidenceBreakdown Json?
+  pipelineState       Json
+  narrative           Json?
+  idempotencyKey      String                @unique
+  correlationId       String?
+  requestedById       String?
+  errorMessage        String?
+  startedAt           DateTime?
+  completedAt         DateTime?
+  durationMs          Int?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  evaluations         CriterionEvaluation[]
+  flags               SafetyFlag[]
+  reviewTasks         ReviewTask[]
+  dossiers            AuditDossier[]
+  executions          LyzrExecution[]
+
+  @@index([decision])
+  @@index([status])
+}
+
+model CriterionEvaluation {
+  id             String    @id @default(uuid())
+  screeningId    String
+  screening      Screening @relation(fields: [screeningId], references: [id])
+  criterionKey   String
+  category       String
+  mandatory      Boolean
+  requirement    String
+  result         String
+  conditionMet   Boolean?
+  operator       String
+  expectedValue  String
+  actualValue    String?
+  ruleExpression String
+  reason         String
+  reviewReasons  Json
+  evidence       Json
+  confidence     Float
+  sourcePage     Int
+  sourceSection  String
+
+  @@unique([screeningId, criterionKey])
+}
+
+model SafetyFlag {
+  id           String    @id @default(uuid())
+  screeningId  String
+  screening    Screening @relation(fields: [screeningId], references: [id])
+  code         String
+  severity     String
+  description  String
+  source       String
+  factIds      String[]
+  criterionIds String[]
+  createdAt    DateTime  @default(now())
+}
+
+model ReviewTask {
+  id          String           @id @default(uuid())
+  screeningId String
+  screening   Screening        @relation(fields: [screeningId], references: [id])
+  status      ReviewTaskStatus @default(OPEN)
+  reasons     Json
+  confidence  Float
+  priority    String           @default("NORMAL")
+  createdAt   DateTime         @default(now())
+  resolvedAt  DateTime?
+  decisions   ReviewDecision[]
+
+  @@index([status])
+}
+
+model ReviewDecision {
+  id                String       @id @default(uuid())
+  reviewTaskId      String
+  reviewTask        ReviewTask   @relation(fields: [reviewTaskId], references: [id])
+  reviewerId        String
+  reviewer          User         @relation(fields: [reviewerId], references: [id])
+  reviewerRole      String
+  action            ReviewAction
+  reason            String
+  resultingDecision Decision?
+  /// SHA-256 over reviewer id, action, reason, timestamp and screening root hash (signature manifestation)
+  signatureHash     String
+  idempotencyKey    String?      @unique
+  createdAt         DateTime     @default(now())
+}
+
+model AuditEvent {
+  id                String  @id
+  chainId           String
+  sequence          Int
+  screeningId       String?
+  timestamp         String
+  eventType         String
+  actorType         String
+  actorId           String?
+  component         String
+  componentVersion  String
+  inputHash         String?
+  outputHash        String?
+  payload           Json
+  previousEventHash String
+  eventHash         String  @unique
+  correlationId     String?
+
+  @@unique([chainId, sequence])
+  @@index([screeningId])
+}
+
+model AuditRoot {
+  id          String   @id @default(uuid())
+  chainId     String
+  screeningId String?
+  rootHash    String
+  eventCount  Int
+  reason      String
+  sealedAt    DateTime @default(now())
+
+  @@index([chainId])
+}
+
+model AuditDossier {
+  id             String    @id @default(uuid())
+  screeningId    String
+  screening      Screening @relation(fields: [screeningId], references: [id])
+  version        Int
+  jsonHash       String
+  pdfHash        String
+  jsonStorageKey String
+  pdfStorageKey  String
+  auditRootHash  String
+  chainValid     Boolean
+  generatedAt    DateTime  @default(now())
+
+  @@unique([screeningId, version])
+}
+
+model LyzrExecution {
+  id                String     @id
+  agentKey          String
+  agentName         String
+  agentVersion      String
+  agentId           String?
+  provider          String
+  environmentId     String?
+  status            String
+  errorCode         String?
+  latencyMs         Int
+  attempts          Int
+  inputHash         String
+  outputHash        String?
+  injectionDetected Boolean
+  safeAiFindings    Json
+  cacheHit          Boolean    @default(false)
+  correlationId     String?
+  aimsExport        Boolean
+  chainId           String
+  screeningId       String?
+  screening         Screening? @relation(fields: [screeningId], references: [id])
+  startedAt         DateTime
+  completedAt       DateTime
+}
+
+/// Live Lyzr responses keyed by sha256(agent, version, instructions, agent id,
+/// exact PHI-redacted message). Temperature-0 outputs are reused instead of
+/// re-billed. Contains only responses to redacted inputs (no PHI). Survives
+/// demo resets on purpose.
+model InferenceCache {
+  key          String    @id
+  agentKey     String
+  agentVersion String
+  responseText String
+  executionId  String
+  hits         Int       @default(0)
+  createdAt    DateTime  @default(now())
+  lastHitAt    DateTime?
+}

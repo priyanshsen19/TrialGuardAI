@@ -1,0 +1,56 @@
+{
+  "patientRef": "PAT-004",
+  "synthetic": true,
+  "syntheticNotice": "Entirely fictional patient generated for TrialGuard AI demonstration. Any resemblance to real persons is coincidental.",
+  "expectedDecision": "REQUIRES_HUMAN_OVERVIEW",
+  "scenario": "Two eGFR results 2 days apart disagree (72 vs 48 mL/min/1.73m2) and lead to opposite outcomes for INC-004.",
+  "demographics": {
+    "name": "Marguerite Olsbury",
+    "dateOfBirth": "1968-11-05",
+    "sex": "F",
+    "mrn": "MRN-100234",
+    "address": "1550 Stonebridge Court, Westfall",
+    "phone": "555-622-8841",
+    "email": "m.olsbury@example.com",
+    "insuranceId": "INS-66091248",
+    "hospitalId": "HOSP-ID-5524"
+  },
+  "documents": [
+    {
+      "name": "face-sheet.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nDEMOGRAPHICS\nPatient Name: Marguerite Olsbury\nDOB: 1968-11-05\nSex: Female\nMRN: MRN-100234\nAddress: 1550 Stonebridge Court, Westfall\nPhone: 555-622-8841\nEmail: m.olsbury@example.com\nInsurance Member ID: INS-66091248\nHospital ID: HOSP-ID-5524"
+      ]
+    },
+    {
+      "name": "problem-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nPROBLEM LIST\n- Type 2 diabetes mellitus | ICD-10 E11.9 | onset 2015-05-27 | active\n- Hyperlipidemia | ICD-10 E78.5 | onset 2016-02-14 | active"
+      ]
+    },
+    {
+      "name": "lab-report.pdf",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nLABORATORY RESULTS\n2026-09-12 | Hemoglobin A1c | 8.0 | %\n2026-09-12 | eGFR (CKD-EPI) | 72 | mL/min/1.73m2\n2026-09-12 | ALT (alanine aminotransferase) | 22 | U/L\n2026-09-12 | AST (aspartate aminotransferase) | 20 | U/L\n2026-09-12 | Total bilirubin | 0.5 | mg/dL\n2026-09-19 | Urine hCG pregnancy test | negative | -\nVITAL SIGNS\n2026-09-12 | BMI | 27.9 | kg/m2"
+      ]
+    },
+    {
+      "name": "outside-lab-report.pdf",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nOutside laboratory: Synthetic Community Lab B\nLABORATORY RESULTS\n2026-09-14 | eGFR (CKD-EPI) | 48 | mL/min/1.73m2"
+      ]
+    },
+    {
+      "name": "medication-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nMEDICATIONS\n- Metformin 1000 mg PO BID | start 2016-01-05 | end ongoing\n- Atorvastatin 40 mg PO nightly | start 2016-03-01 | end ongoing"
+      ]
+    },
+    {
+      "name": "procedures-and-consent.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nADMINISTRATIVE\n- Informed consent signed (ICF v2.1) | 2026-09-18"
+      ]
+    }
+  ]
+}

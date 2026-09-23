@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.next
+backend/storage
+/storage
+**/demo-output
+**/.env
+**/.env.local
+.git
+docs/screenshots

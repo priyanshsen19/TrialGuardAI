@@ -1,0 +1,98 @@
+# TrialGuard AI — full stack (synthetic data only)
+#   cp .env.example .env   # optional: add Lyzr credentials for LYZR_MODE=live
+#   docker compose up --build
+# UI: http://localhost:3000   API: http://localhost:4000/api/v1/health
+
+x-backend-env: &backend-env
+  NODE_ENV: production
+  DATABASE_URL: postgresql://trialguard:trialguard@postgres:5432/trialguard
+  REDIS_URL: redis://redis:6379
+  QUEUE_MODE: bullmq
+  JWT_SECRET: ${JWT_SECRET:-change-me-dev-only-jwt-secret-please-rotate-000000}
+  ENCRYPTION_MASTER_KEY: ${ENCRYPTION_MASTER_KEY:-6465762d6f6e6c792d6368616e67652d6d652d747269616c67756172642d6b6579}
+  CORS_ORIGINS: http://localhost:3000
+  DEMO_MODE: "true"
+  DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:-TrialGuard!Demo2026}
+  LYZR_MODE: ${LYZR_MODE:-mock}
+  LYZR_API_KEY: ${LYZR_API_KEY:-}
+  LYZR_BASE_URL: ${LYZR_BASE_URL:-https://agent-prod.studio.lyzr.ai}
+  LYZR_ENVIRONMENT_ID: ${LYZR_ENVIRONMENT_ID:-}
+  LYZR_PROTOCOL_AGENT_ID: ${LYZR_PROTOCOL_AGENT_ID:-}
+  LYZR_PATIENT_AGENT_ID: ${LYZR_PATIENT_AGENT_ID:-}
+  LYZR_SAFETY_AGENT_ID: ${LYZR_SAFETY_AGENT_ID:-}
+  LYZR_AUDIT_AGENT_ID: ${LYZR_AUDIT_AGENT_ID:-}
+  LYZR_AIMS_ENABLED: ${LYZR_AIMS_ENABLED:-false}
+  STORAGE_DIR: /data/storage
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: trialguard
+      POSTGRES_PASSWORD: trialguard
+      POSTGRES_DB: trialguard
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trialguard -d trialguard"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: { context: ., target: backend }
+    environment: *backend-env
+    ports: ["4000:4000"]
+    volumes: [storage:/data/storage]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  worker:
+    build: { context: ., target: backend }
+    command: ["node", "dist/worker.js"]
+    environment: *backend-env
+    volumes: [storage:/data/storage]
+    depends_on:
+      backend: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
+        NEXT_PUBLIC_DEMO_PASSWORD: ${DEMO_USER_PASSWORD:-TrialGuard!Demo2026}
+    ports: ["3000:3000"]
+    depends_on:
+      backend: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  pgdata:
+  redisdata:
+  storage:

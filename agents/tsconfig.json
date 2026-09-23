@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "types": ["node"]
+  },
+  "include": ["index.ts", "contracts/**/*.ts", "lyzr/**/*.ts", "protocol-criteria/**/*.ts", "clinical-facts/**/*.ts", "safety-validator/**/*.ts", "audit-agent/**/*.ts", "orchestration/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

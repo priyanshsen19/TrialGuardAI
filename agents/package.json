@@ -1,0 +1,22 @@
+{
+  "name": "@trialguard/agents",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TrialGuard AI Lyzr agents, Safe AI layer, and multi-agent orchestration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "provision": "node dist/lyzr/provision.js",
+    "manifest": "node dist/lyzr/print-manifest.js",
+    "sync": "node dist/lyzr/sync-agents.js"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.6.3"
+  }
+}

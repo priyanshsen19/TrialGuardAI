@@ -1,0 +1,14 @@
+packages:
+  - agents
+  - backend
+  - frontend
+
+allowBuilds:
+  "@prisma/client": true
+  "@prisma/engines": true
+  prisma: true
+  esbuild: true
+  "@swc/core": true
+  msgpackr-extract: false
+  sharp: true
+  unrs-resolver: true

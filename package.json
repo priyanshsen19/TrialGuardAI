@@ -1,0 +1,39 @@
+{
+  "name": "trialguard-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TrialGuard AI — Governed AI for Clinical Trial Patient Screening (HiDevs Agent Arena, synthetic data only)",
+  "packageManager": "pnpm@11.12.0",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "build": "pnpm --filter @trialguard/agents build && pnpm --filter @trialguard/backend build && pnpm --filter @trialguard/frontend build",
+    "build:agents": "pnpm --filter @trialguard/agents build",
+    "dev:backend": "pnpm --filter @trialguard/backend dev",
+    "dev:worker": "pnpm --filter @trialguard/backend worker",
+    "dev:frontend": "pnpm --filter @trialguard/frontend dev",
+    "db:migrate": "pnpm --filter @trialguard/backend prisma:deploy",
+    "db:generate": "pnpm --filter @trialguard/backend prisma:generate",
+    "demo:seed": "pnpm --filter @trialguard/backend seed",
+    "demo:run": "pnpm --filter @trialguard/backend demo",
+    "synthetic:pdf": "node synthetic-data/scripts/build-protocol-pdf.mjs",
+    "test": "vitest run --config tests/vitest.config.ts",
+    "test:unit": "vitest run --config tests/vitest.config.ts tests/unit",
+    "test:integration": "vitest run --config tests/vitest.config.ts tests/integration",
+    "typecheck": "pnpm -r typecheck",
+    "docs:screenshots": "node docs/scripts/capture-screenshots.mjs"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.7.0",
+    "@types/node": "^22.10.0",
+    "@types/supertest": "^6.0.2",
+    "pdf-parse": "1.1.1",
+    "supertest": "^7.0.0",
+    "typescript": "^5.6.3",
+    "unplugin-swc": "^1.5.1",
+    "vitest": "^3.2.4",
+    "pdfkit": "^0.17.2",
+    "puppeteer-core": "^24.22.0"
+  }
+}

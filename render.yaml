@@ -1,0 +1,79 @@
+# TrialGuard AI — Render Blueprint (Infrastructure as Code)
+#
+# Deploy: Render dashboard → New → Blueprint → connect this repo → Apply.
+# Free tier has no persistent disk, so this uses QUEUE_MODE=inline (screening
+# jobs run in-process on the API service) rather than a separate BullMQ worker
+# + Redis, which would need a filesystem shared between two services — not
+# available on Render without adding S3-style object storage. BullMQ/Redis/
+# worker are still fully implemented and demonstrated via docker-compose.
+#
+# If either onrender.com subdomain below is already taken, rename the
+# service consistently (its `name:` AND every place the other service
+# references its URL) before applying.
+
+databases:
+  - name: trialguard-db
+    plan: free
+    postgresMajorVersion: "16"
+
+services:
+  - name: trialguard-backend
+    type: web
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile.backend
+    dockerContext: .
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trialguard-db
+          property: connectionString
+      - key: QUEUE_MODE
+        value: inline
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_MASTER_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://trialguard-frontend.onrender.com
+      - key: DEMO_MODE
+        value: "true"
+      - key: DEMO_USER_PASSWORD
+        value: "TrialGuard!Demo2026"
+      - key: STORAGE_DIR
+        value: ./storage
+      # Mock mode needs no credentials. To go live, set these 5 in the Render
+      # dashboard (Environment tab) after provisioning the agents — see README
+      # "Live Lyzr mode". They are intentionally left unset here (sync: false)
+      # so nothing is baked into the blueprint or git history.
+      - key: LYZR_MODE
+        value: mock
+      - key: LYZR_API_KEY
+        sync: false
+      - key: LYZR_PROTOCOL_AGENT_ID
+        sync: false
+      - key: LYZR_PATIENT_AGENT_ID
+        sync: false
+      - key: LYZR_SAFETY_AGENT_ID
+        sync: false
+      - key: LYZR_AUDIT_AGENT_ID
+        sync: false
+
+  - name: trialguard-frontend
+    type: web
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile.frontend
+    dockerContext: .
+    healthCheckPath: /login
+    envVars:
+      # Baked into the client bundle at build time (Render passes envVars as
+      # Docker build args automatically). Matches trialguard-backend's fixed
+      # onrender.com URL above.
+      - key: NEXT_PUBLIC_API_URL
+        value: https://trialguard-backend.onrender.com/api/v1
+      - key: NEXT_PUBLIC_DEMO_PASSWORD
+        value: "TrialGuard!Demo2026"

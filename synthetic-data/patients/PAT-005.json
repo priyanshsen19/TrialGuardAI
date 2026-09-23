@@ -1,0 +1,50 @@
+{
+  "patientRef": "PAT-005",
+  "synthetic": true,
+  "syntheticNotice": "Entirely fictional patient generated for TrialGuard AI demonstration. Any resemblance to real persons is coincidental.",
+  "expectedDecision": "REQUIRES_HUMAN_OVERVIEW",
+  "scenario": "No HbA1c result in the record - INC-003 cannot be evaluated (missing required laboratory evidence).",
+  "demographics": {
+    "name": "Cornelius Pembrook",
+    "dateOfBirth": "1960-04-18",
+    "sex": "M",
+    "mrn": "MRN-100235",
+    "address": "63 Larkspur Drive, Eastbrook",
+    "phone": "555-745-3390",
+    "email": "c.pembrook@example.com",
+    "insuranceId": "INS-99218804",
+    "hospitalId": "HOSP-ID-5525"
+  },
+  "documents": [
+    {
+      "name": "face-sheet.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nDEMOGRAPHICS\nPatient Name: Cornelius Pembrook\nDOB: 1960-04-18\nSex: Male\nMRN: MRN-100235\nAddress: 63 Larkspur Drive, Eastbrook\nPhone: 555-745-3390\nEmail: c.pembrook@example.com\nInsurance Member ID: INS-99218804\nHospital ID: HOSP-ID-5525"
+      ]
+    },
+    {
+      "name": "problem-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nPROBLEM LIST\n- Type 2 diabetes mellitus | ICD-10 E11.9 | onset 2012-12-03 | active\n- Essential hypertension | ICD-10 I10 | onset 2010-07-21 | active"
+      ]
+    },
+    {
+      "name": "lab-report.pdf",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nLABORATORY RESULTS\n2026-09-08 | eGFR (CKD-EPI) | 66 | mL/min/1.73m2\n2026-09-08 | ALT (alanine aminotransferase) | 30 | U/L\n2026-09-08 | AST (aspartate aminotransferase) | 27 | U/L\n2026-09-08 | Total bilirubin | 1.1 | mg/dL\nVITAL SIGNS\n2026-09-08 | BMI | 28.6 | kg/m2"
+      ]
+    },
+    {
+      "name": "medication-list.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nMEDICATIONS\n- Metformin 1000 mg PO BID | start 2013-01-15 | end ongoing\n- Lisinopril 20 mg PO daily | start 2010-08-01 | end ongoing"
+      ]
+    },
+    {
+      "name": "procedures-and-consent.txt",
+      "pages": [
+        "SYNTHETIC PATIENT RECORD - FICTIONAL DATA FOR SOFTWARE DEMONSTRATION ONLY\nADMINISTRATIVE\n- Informed consent signed (ICF v2.1) | 2026-09-14"
+      ]
+    }
+  ]
+}
